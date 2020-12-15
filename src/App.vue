@@ -74,7 +74,7 @@ const INITIAL_CODE = dedent`
     print(f"{n} numbers of Fibonacci sequence:")
 
     for i in range(n):
-      print(f"{i + 1} => {n1}")
+      print(f"\t{i + 1} => {n1}")
       n1, n2 = n2, n1 + n2
 
   def main():

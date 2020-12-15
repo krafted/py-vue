@@ -91,6 +91,7 @@ export default {
   name: 'App',
   data: () => ({
     code: INITIAL_CODE,
+    keyMap: 'default',
     output: '',
   }),
   created() {
@@ -121,7 +122,7 @@ export default {
         },
         gutters: ["CodeMirror-linenumbers"],
         indentUnit: 2,
-        keyMap: 'vim',
+        keyMap: this.keyMap,
         lineNumbers: true,
         lineWrapping: true,
         mode: 'text/x-python',

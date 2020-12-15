@@ -4,6 +4,7 @@ module.exports = {
   purge: {
     mode: 'all',
     content: [
+      './public/*.html',
       './src/*.js',
       './src/**/*.js',
       './src/**/*.vue',

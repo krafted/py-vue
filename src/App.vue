@@ -1,15 +1,15 @@
 <template>
-  <div class="flex h-screen flex-col">
+  <div class="flex flex-col h-screen">
     <header class="flex items-center justify-between px-4 h-14">
       <h1 class="text-lg font-semibold text-gray-700">
         <a href="/">Py</a>
       </h1>
 
       <div class="flex items-center justify-end hidden"> <!-- TODO: Remove `hidden` when settings added -->
-        <button class="rounded-md border border-transparent w-10 h-10 flex items-center justify-center hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 text-gray-700 hover:text-gray-400 focus:text-gray-400 focus:outline-none">
+        <button class="flex items-center justify-center w-10 h-10 text-gray-700 border border-transparent rounded-md hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none">
           <span class="sr-only">Settings</span>
 
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
@@ -17,12 +17,12 @@
       </div>
     </header>
 
-    <div class="flex flex-col md:flex-row flex-1 border-t border-gray-800">
-      <div class="flex flex-1 flex-shrink-0 flex-col md:flex-row">
-        <div id="editor" class="flex flex-col flex-1 -mb-2 pt-2 md:pt-0 md:mb-0 md:-mr-2 md:pl-2">
-          <div class="flex-1 flex flex-col relative -mt-2 md:mt-0 md:-ml-2">
-            <header class="border-b border-gray-800 flex items-center space-x-2 px-4 py-4">
-              <h3 class="text-xs uppercase font-semibold text-gray-700 select-none">Editor</h3>
+    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
+      <div class="flex flex-col flex-1 flex-shrink-0 md:flex-row">
+        <div id="editor" class="flex flex-col flex-1 pt-2 -mb-2 md:pt-0 md:mb-0 md:-mr-2 md:pl-2">
+          <div class="relative flex flex-col flex-1 -mt-2 md:mt-0 md:-ml-2">
+            <header class="flex items-center px-4 py-4 space-x-2 border-b border-gray-800">
+              <h3 class="text-xs font-semibold text-gray-700 uppercase select-none">Editor</h3>
             </header>
 
             <div class="flex-1">
@@ -34,16 +34,16 @@
           </div>
         </div>
 
-        <div id="output" class="flex flex-col flex-1 -mt-2 pb-2 md:mt-0 md:-ml-2 md:pr-2 md:pb-0">
-          <div class="flex flex-1 flex-col -mb-2 md:mb-0 md:-mr-2">
-            <header class="border-b border-gray-800 flex items-center justify-between px-4 py-4">
-              <h3 class="text-xs uppercase font-semibold text-gray-700 select-none">Output</h3>
+        <div id="output" class="flex flex-col flex-1 pb-2 -mt-2 md:mt-0 md:-ml-2 md:pr-2 md:pb-0">
+          <div class="flex flex-col flex-1 -mb-2 md:mb-0 md:-mr-2">
+            <header class="flex items-center justify-between px-4 py-4 border-b border-gray-800">
+              <h3 class="text-xs font-semibold text-gray-700 uppercase select-none">Output</h3>
             </header>
 
             <div class="flex-1">
               <textarea
                 ref="output"
-                class="py-1 absolute inset-0 h-full w-full bg-transparent flex-shrink-0 resize-none px-4 pb-4 font-mono focus:outline-none text-gray-400 leading-8"
+                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent resize-none focus:outline-none"
                 readonly
                 v-model="output"
               />
@@ -153,7 +153,7 @@ export default {
           const gutter = document.createElement('div');
           if (direction === 'horizontal') {
             gutter.className = 'px-2 cursor-col-resize z-10'
-            gutter.innerHTML = '<div class="h-full w-px bg-gray-800" />'
+            gutter.innerHTML = '<div class="w-px h-full bg-gray-800" />'
           } else {
             gutter.className = 'py-2 cursor-row-resize z-10'
             gutter.innerHTML = '<div class="w-full h-px bg-gray-800" />'

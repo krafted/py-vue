@@ -8,7 +8,13 @@ module.exports = {
       './src/*.js',
       './src/**/*.js',
       './src/**/*.vue',
-    ]
+      './src/css/codemirror/*',
+    ],
+    options: {
+      safelist: {
+        standard: [/cm|CodeMirror/],
+      },
+    },
   },
   darkMode: false,
   theme: {

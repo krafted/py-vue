@@ -43,7 +43,7 @@
             <div class="flex-1">
               <textarea
                 ref="output"
-                class="absolute inset-0 h-full w-full bg-transparent flex-shrink-0 resize-none px-4 pb-4 font-mono focus:outline-none text-gray-400 leading-8"
+                class="py-1 absolute inset-0 h-full w-full bg-transparent flex-shrink-0 resize-none px-4 pb-4 font-mono focus:outline-none text-gray-400 leading-8"
                 readonly
                 v-model="output"
               />
@@ -74,7 +74,7 @@ const INITIAL_CODE = dedent`
     print(f"{n} numbers of Fibonacci sequence:")
 
     for i in range(n):
-      print(f"=> {n1}")
+      print(f"{i + 1} => {n1}")
       n1, n2 = n2, n1 + n2
 
   def main():

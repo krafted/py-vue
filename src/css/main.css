@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  @import "../../node_modules/codemirror/lib/codemirror.css";
+  @import "./codemirror/base.css";
+  @import "./codemirror/themes/custom.css";
+
+  * {
+    @apply relative;
+  }
+}

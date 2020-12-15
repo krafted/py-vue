@@ -1,0 +1,151 @@
+.cm-s-custom.CodeMirror {
+  background-color: theme('colors.gray.900');
+  color: theme('colors.gray.400');
+}
+
+.cm-s-custom .CodeMirror-gutters {
+  background: theme('colors.gray.900');
+  color: theme('colors.gray.700');
+  border: none;
+}
+
+.cm-s-custom .CodeMirror-guttermarker,
+.cm-s-custom .CodeMirror-guttermarker-subtle,
+.cm-s-custom .CodeMirror-linenumber {
+  color: theme('colors.gray.700');
+}
+
+.cm-s-custom .CodeMirror-cursor {
+  border-left: 0.125rem solid theme('colors.yellow.500');
+  border-radius: theme('borderRadius.full');
+}
+
+.cm-s-custom.cm-fat-cursor .CodeMirror-cursor {
+  background-color: theme('colors.yellow.500');
+  border-radius: theme('borderRadius.sm');
+}
+
+.cm-s-custom div.CodeMirror-selected {
+  background: rgba(113, 128, 150, 0.2);
+}
+
+.cm-s-custom.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(113, 128, 150, 0.2);
+}
+
+.cm-s-custom .CodeMirror-line::selection,
+.cm-s-custom .CodeMirror-line>span::selection,
+.cm-s-custom .CodeMirror-line>span>span::selection {
+  background: rgba(113, 128, 150, 0.2);
+}
+
+.cm-s-custom .CodeMirror-line::-moz-selection,
+.cm-s-custom .CodeMirror-line>span::-moz-selection,
+.cm-s-custom .CodeMirror-line>span>span::-moz-selection {
+  background: rgba(113, 128, 150, 0.2);
+}
+
+.cm-s-custom .CodeMirror-activeline-gutter {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.cm-s-custom .CodeMirror-activeline-gutter .CodeMirror-guttermarker,
+.cm-s-custom .CodeMirror-activeline-gutter .CodeMirror-guttermarker-subtle,
+.cm-s-custom .CodeMirror-activeline-gutter .CodeMirror-linenumber {
+  color: theme('colors.gray.500');
+}
+
+.cm-s-custom .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.2);
+  border-top-right-radius: theme('borderRadius.md');
+  border-bottom-right-radius: theme('borderRadius.md');
+}
+
+.cm-s-custom .cm-keyword {
+  color: theme('colors.purple.400');
+}
+
+.cm-s-custom .cm-operator {
+  color: theme('colors.blue.300');
+}
+
+.cm-s-custom .cm-variable-2 {
+  color: theme('colors.gray.200');
+}
+
+.cm-s-custom .cm-variable-3,
+.cm-s-custom .cm-type {
+  color: theme('colors.red.400');
+}
+
+.cm-s-custom .cm-builtin {
+  color: theme('colors.yellow.500');
+}
+
+.cm-s-custom .cm-atom {
+  color: theme('colors.orange.500');
+}
+
+.cm-s-custom .cm-number {
+  color: theme('colors.red.500');
+}
+
+.cm-s-custom .cm-def {
+  color: theme('colors.indigo.400');
+}
+
+.cm-s-custom .cm-string {
+  color: theme('colors.green.300');
+}
+
+.cm-s-custom .cm-string-2 {
+  color: theme('colors.red.400');
+}
+
+.cm-s-custom .cm-comment {
+  color: theme('colors.gray.600');
+}
+
+.cm-s-custom .cm-variable {
+  color: theme('colors.red.400');
+}
+
+.cm-s-custom .cm-tag {
+  color: theme('colors.red.500');
+}
+
+.cm-s-custom .cm-meta {
+  color: theme('colors.yellow.500');
+}
+
+.cm-s-custom .cm-attribute {
+  color: theme('colors.purple.400');
+}
+
+.cm-s-custom .cm-property {
+  color: theme('colors.purple.400');
+}
+
+.cm-s-custom .cm-qualifier {
+  color: theme('colors.yellow.300');
+}
+
+.cm-s-custom .cm-variable-3,
+.cm-s-custom .cm-type {
+  color: theme('colors.yellow.300');
+}
+
+
+.cm-s-custom .cm-error {
+  color: rgba(255, 255, 255, 1.0);
+  background-color: theme('colors.red.500');
+}
+
+.cm-s-custom .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+
+.cm-s-custom .CodeMirror-gutter-breakpoint {
+  color: theme('colors.red.600');
+}

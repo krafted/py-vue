@@ -94,7 +94,7 @@ export default {
     output: '',
   }),
   created() {
-    window.addEventListener('resize', this.initializeSplits)
+    window.addEventListener('resize', debounce(this.initializeSplits, 200))
   },
   mounted() {
     this.initializeEditor()
@@ -102,7 +102,7 @@ export default {
     this.run()
   },
   unmounted() {
-    window.removeEventListener('resize', this.initializeSplits)
+    window.removeEventListener('resize', debounce(this.initializeSplits, 200))
   },
   methods: {
     initializeEditor() {

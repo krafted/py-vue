@@ -1,19 +1,21 @@
 <template>
   <div class="flex flex-col h-screen">
     <header class="flex items-center justify-between px-4 h-14">
-      <h1 class="text-lg font-semibold text-gray-700">
-        <a href="/">Py</a>
+      <h1>
+        <a
+          class="flex items-center justify-center w-10 h-10 -ml-2 text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
+          href="/"
+        >
+          Py
+        </a>
       </h1>
 
-      <div class="flex items-center justify-end hidden"> <!-- TODO: Remove `hidden` when settings added -->
-        <button class="flex items-center justify-center w-10 h-10 text-gray-700 border border-transparent rounded-md hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none">
-          <span class="sr-only">Settings</span>
-
-          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </button>
+      <div class="flex items-center justify-end -mr-2 space-x-2">
+        <Settings
+          v-if="!isMobile()"
+          :settings="settings"
+          @changed="setSetting($event.key, $event.value)"
+        />
       </div>
     </header>
 
@@ -43,7 +45,7 @@
             <div class="flex-1">
               <textarea
                 ref="output"
-                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent resize-none focus:outline-none"
+                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent border-0 border-none resize-none focus:ring-0 focus:outline-none"
                 readonly
                 v-model="output"
               />
@@ -60,12 +62,21 @@ import _CodeMirror from "codemirror";
 import Split from 'split.js'
 import debounce from 'debounce'
 import dedent from 'dedent'
+import isMobile from 'is-mobile'
 import * as rp from 'rustpython_wasm'
+
+import Settings from './components/Settings'
 
 import 'codemirror/mode/python/python'
 import 'codemirror/addon/selection/active-line'
+import 'codemirror/keymap/emacs'
+import 'codemirror/keymap/sublime'
 import 'codemirror/keymap/vim'
 
+const DEFAULT_SETTINGS = {
+  indentUnit: 2,
+  keyMap: 'default',
+}
 const INITIAL_CODE = dedent`
   def fib(n):
     n1 = 0
@@ -89,27 +100,43 @@ let splitInstance
 
 export default {
   name: 'App',
+  components: {
+    Settings,
+  },
   data: () => ({
     code: INITIAL_CODE,
-    keyMap: 'default',
-    output: '',
     isMd: false,
+    output: '',
+    settings: DEFAULT_SETTINGS,
   }),
   created() {
     window.addEventListener('resize', debounce(this.initializeSplits, 200))
-    window.addEventListener('resize', this.updateSize)
+    window.addEventListener('resize', debounce(this.updateSize, 200))
   },
   mounted() {
+    this.fetchSettings()
     this.initializeEditor()
     this.initializeSplits()
+    this.updateSize()
     this.run()
   },
   unmounted() {
     window.removeEventListener('resize', debounce(this.initializeSplits, 200))
-    window.removeEventListener('resize', this.updateSize)
+    window.removeEventListener('resize', debounce(this.updateSize, 200))
   },
   methods: {
+    fetchSettings() {
+      if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
+      this.settings = JSON.parse(localStorage.settings)
+    },
+    setSetting(key, value) {
+      this.settings[key] = value
+      localStorage.settings = JSON.stringify(this.settings)
+      editorInstance.setOption(key, value)
+    },
     initializeEditor() {
+      if (editorInstance) editorInstance.destroy()
+
       editorInstance = CodeMirror.fromTextArea(this.$refs.editor, {
         autofocus: true,
         extraKeys: {
@@ -124,8 +151,8 @@ export default {
           }
         },
         gutters: ["CodeMirror-linenumbers"],
-        indentUnit: 2,
-        keyMap: this.keyMap,
+        indentUnit: parseInt(this.settings.indentUnit),
+        keyMap: isMobile() ? 'default' : this.settings.keyMap,
         lineNumbers: true,
         lineWrapping: true,
         mode: 'text/x-python',
@@ -178,8 +205,9 @@ export default {
       }
     },
     updateSize() {
-      this.isMd = window.matchMedia('(min-width: 768px)')
+      this.isMd = window.matchMedia('(min-width: 768px)').matches
     },
+    isMobile,
   }
 }
 </script>

@@ -16,8 +16,9 @@
   @apply border-l-2 border-yellow-500 rounded-sm;
 }
 
-.cm-s-custom.cm-fat-cursor .CodeMirror-cursor {
-  @apply text-yellow-500;
+.cm-s-custom.cm-fat-cursor .CodeMirror-cursor,
+.cm-s-custom .cm-animate-fat-cursor {
+  @apply bg-yellow-500 bg-opacity-50 rounded-sm;
 }
 
 .cm-s-custom div.CodeMirror-selected {

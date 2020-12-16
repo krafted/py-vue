@@ -93,9 +93,11 @@ export default {
     code: INITIAL_CODE,
     keyMap: 'default',
     output: '',
+    isMd: false,
   }),
   created() {
     window.addEventListener('resize', debounce(this.initializeSplits, 200))
+    window.addEventListener('resize', this.updateSize)
   },
   mounted() {
     this.initializeEditor()
@@ -104,6 +106,7 @@ export default {
   },
   unmounted() {
     window.removeEventListener('resize', debounce(this.initializeSplits, 200))
+    window.removeEventListener('resize', this.updateSize)
   },
   methods: {
     initializeEditor() {
@@ -131,7 +134,7 @@ export default {
       })
 
       editorInstance.on('change', debounce(editor => {
-        this.code = editor.getValue();
+        this.code = editor.getValue()
         if (this.$emit) {
           this.$emit('input', this.code)
         }
@@ -143,7 +146,7 @@ export default {
 
       splitInstance = Split(['#editor', '#output'], {
         direction: window.innerWidth >= 768 ? 'horizontal' : 'vertical',
-        minSize: [250, 250],
+        minSize: [400, 400],
         elementStyle: (dimension, size, gutterSize) => {
           return {
             'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
@@ -166,21 +169,17 @@ export default {
       let vm = this
       vm.output = ''
       try {
-        rp.pyEval(vm.code, {
-          stdout: output => {
-            vm.output += output;
-          }
-        })
+        rp.pyEval(vm.code, { stdout: output => vm.output += output })
       } catch (err) {
         let error = err
-        if (err instanceof WebAssembly.RuntimeError) {
-          error = window.__RUSTPYTHON_ERROR || err
-        }
-
+        if (err instanceof WebAssembly.RuntimeError) error = window.__RUSTPYTHON_ERROR || err
         vm.output = error
         console.error(error)
       }
-    }
+    },
+    updateSize() {
+      this.isMd = window.matchMedia('(min-width: 768px)')
+    },
   }
 }
 </script>

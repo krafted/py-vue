@@ -9,7 +9,6 @@
   >
     <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
       <transition
-        v-show="show"
         enter-active-class="duration-300 ease-out"
         enter-class="opacity-0"
         enter-to-class="opacity-100"
@@ -18,6 +17,7 @@
         leave-to-class="opacity-0"
       >
         <div
+          v-show="show"
           class="fixed inset-0 transition-opacity"
           aria-hidden="true"
           @click="hide"
@@ -91,7 +91,17 @@ export default {
       show: this.initialShow,
     }
   },
+  mounted() {
+    window.addEventListener('keyup', this.handleEsc)
+  },
+  unmounted() {
+    window.removeEventListener('keyup', this.handleEsc)
+  },
   methods: {
+    handleEsc(event) {
+      if (event.key === 'Escape') this.hide()
+      event.preventDefault()
+    },
     hide() {
       this.show = false
     },

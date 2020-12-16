@@ -39,7 +39,7 @@
           />
         </label>
 
-        <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
+        <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs" v-if="!isMobile">
           <span>Keymap</span>
           <select
             class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
@@ -78,6 +78,9 @@ export default {
   },
   emits: ['changed'],
   props: {
+    isMobile: {
+      type: Boolean,
+    },
     settings: {
       type: Object,
       required: true,

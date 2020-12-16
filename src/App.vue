@@ -12,7 +12,7 @@
 
       <div class="flex items-center justify-end -mr-2 space-x-2">
         <Settings
-          v-if="!isMobile()"
+          :is-mobile="isMobile()"
           :settings="settings"
           @changed="setSetting($event.key, $event.value)"
         />

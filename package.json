@@ -15,10 +15,12 @@
     "core-js": "^3.6.5",
     "debounce": "^1.2.0",
     "dedent": "^0.7.0",
+    "hotkeys-js": "^3.8.1",
     "is-mobile": "^2.2.2",
     "postcss": "^7",
     "rustpython_wasm": "^0.1.0-pre-alpha.2",
     "split.js": "^1.6.2",
+    "splitpanes": "^3.0.4",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^3.0.0"
   },

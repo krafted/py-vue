@@ -3,7 +3,7 @@
     <header class="flex items-center justify-between px-4 h-14">
       <h1>
         <a
-          class="flex items-center justify-center w-10 h-10 -ml-2 text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
+          class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
           href="/"
         >
           Py
@@ -12,10 +12,16 @@
 
       <div class="flex items-center justify-end -mr-2 space-x-2">
         <button
-          class="flex items-center justify-center w-10 h-10 text-gray-700 border border-transparent rounded-md hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
+          class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
           @click="showSettings = true"
         >
           <span class="sr-only">Settings</span>
+
+          <span
+            v-if="!isMobile()"
+            class="hidden mr-2 font-mono text-xs group-hover:inline group-focus:inline"
+            v-text="isMac ? 'CMD + ,' : 'CTRL + ,'"
+          />
 
           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -28,54 +34,109 @@
           :settings="settings"
           :show="showSettings"
           @changed="setSetting($event.key, $event.value)"
-          @close="showSettings = false"
+          @closed="showSettings = false"
         />
       </div>
     </header>
 
     <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
-      <div class="flex flex-col flex-1 flex-shrink-0 md:flex-row">
-        <div id="editor" class="flex flex-col flex-1 pt-2 -mb-2 md:pt-0 md:mb-0 md:-mr-2 md:pl-2">
-          <div class="relative flex flex-col flex-1 -mt-2 md:mt-0 md:-ml-2">
-            <header class="flex items-center px-4 py-4 space-x-2 border-b border-gray-800">
-              <h3 class="text-xs font-semibold text-gray-700 uppercase select-none">Editor</h3>
+      <Splitpanes :horizontal="!isMd">
+        <Pane
+          class="flex flex-col w-full h-full overflow-hidden"
+          min-size="33.333"
+        >
+          <div class="relative flex flex-col flex-1">
+            <header class="flex items-center px-4 border-b border-gray-800">
+              <div class="flex items-center -mb-px space-x-4">
+                <button
+                  class="flex py-4 border-b-2 border-transparent focus:outline-none"
+                  :class="{
+                    'border-yellow-500 text-gray-200': !isMd && activeTab === 'editor',
+                    'border-transparent text-gray-700': isMd || activeTab !== 'editor',
+                  }"
+                  @click="activeTab = 'editor'"
+                >
+                  <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Editor</h3>
+                </button>
+
+                <button
+                  v-if="!isMd"
+                  class="flex items-center py-4 border-b-2 border-transparent focus:outline-none"
+                  :class="{
+                    'border-yellow-500 text-gray-200': activeTab === 'output',
+                    'border-transparent text-gray-700': activeTab !== 'output',
+                  }"
+                  @click="activeTab = 'output', dirty = false"
+                >
+                  <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
+
+                  <span
+                    v-if="dirty"
+                    class="w-1 h-1 ml-2 bg-yellow-500 rounded-full"
+                  />
+                </button>
+              </div>
             </header>
 
-            <div class="flex-1">
+            <div
+              v-show="isMd || activeTab === 'editor'"
+              class="flex-1"
+            >
               <textarea
                 ref="editor"
                 v-model="code"
               />
             </div>
-          </div>
-        </div>
 
-        <div id="output" class="flex flex-col flex-1 pb-2 -mt-2 md:mt-0 md:-ml-2 md:pr-2 md:pb-0">
-          <div class="flex flex-col flex-1 -mb-2 md:mb-0 md:-mr-2">
-            <header class="flex items-center justify-between px-4 py-4 border-b border-gray-800">
-              <h3 class="text-xs font-semibold text-gray-700 uppercase select-none">Output</h3>
+            <div
+              v-if="!isMd && activeTab === 'output'"
+              class="flex-1"
+            >
+              <textarea
+                v-model="output"
+                ref="output"
+                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent border-0 border-none resize-none focus:ring-0 focus:outline-none"
+                readonly
+                @click="dirty = false"
+                @focus="dirty = false"
+              />
+            </div>
+          </div>
+        </Pane>
+
+        <Pane
+          v-if="isMd"
+          class="flex flex-col w-full h-full overflow-hidden"
+          min-size="33.333"
+        >
+          <div class="relative flex flex-col flex-1">
+            <header class="flex items-center px-4 py-4 border-b border-gray-800">
+              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
             </header>
 
             <div class="flex-1">
               <textarea
+                v-model="output"
                 ref="output"
                 class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent border-0 border-none resize-none focus:ring-0 focus:outline-none"
                 readonly
-                v-model="output"
+                @click="dirty = false"
+                @focus="dirty = false"
               />
             </div>
           </div>
-        </div>
-      </div>
+        </Pane>
+      </Splitpanes>
     </div>
   </div>
 </template>
 
 <script>
-import _CodeMirror from "codemirror";
-import Split from 'split.js'
+import CodeMirror from 'codemirror'
+import { Splitpanes, Pane } from 'splitpanes'
 import debounce from 'debounce'
 import dedent from 'dedent'
+import hotkeys from 'hotkeys-js'
 import isMobile from 'is-mobile'
 import * as rp from 'rustpython_wasm'
 
@@ -107,37 +168,53 @@ const INITIAL_CODE = dedent`
 
   main()
 `
-const CodeMirror = window.CodeMirror || _CodeMirror
-
-let editorInstance
-let splitInstance
-
 export default {
   name: 'App',
   components: {
+    Pane,
     Settings,
+    Splitpanes,
   },
   data: () => ({
+    activeTab: 'editor',
     code: INITIAL_CODE,
+    dirty: false,
+    editor: null,
     isMd: false,
     output: '',
     settings: DEFAULT_SETTINGS,
     showSettings: false,
   }),
-  created() {
-    window.addEventListener('resize', debounce(this.initializeSplits, 200))
-    window.addEventListener('resize', debounce(this.updateSize, 200))
+  computed: {
+    isMac() {
+      return navigator.userAgent.indexOf('Mac') !== -1
+    },
+  },
+  watch: {
+    isMd: {
+      immediate: true,
+      handler: function(isMd) {
+        if (isMd) this.activeTab = 'editor'
+      }
+    }
   },
   mounted() {
     this.fetchSettings()
     this.initializeEditor()
-    this.initializeSplits()
     this.updateSize()
     this.run()
+
+    window.addEventListener('resize', debounce(this.updateSize, 200))
+
+    hotkeys(this.isMac ? 'cmd+,' : 'ctrl+,', (event) => {      
+      this.showSettings = true
+      event.preventDefault()
+    })
   },
   unmounted() {
-    window.removeEventListener('resize', debounce(this.initializeSplits, 200))
     window.removeEventListener('resize', debounce(this.updateSize, 200))
+
+    hotkeys.unbind(this.isMac ? 'cmd+,' : 'ctrl+,')
   },
   methods: {
     fetchSettings() {
@@ -147,16 +224,14 @@ export default {
     setSetting(key, value) {
       this.settings[key] = value
       localStorage.settings = JSON.stringify(this.settings)
-      editorInstance.setOption(key, value)
+      this.editor.setOption(key, value)
     },
     initializeEditor() {
-      if (editorInstance) editorInstance.destroy()
+      if (this.editor) this.editor.destroy()
 
-      editorInstance = CodeMirror.fromTextArea(this.$refs.editor, {
+      this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
         autofocus: true,
         extraKeys: {
-          'Ctrl-R': this.run,
-          'Cmd-R': this.run,
           'Shift-Tab': 'indentLess',
           'Ctrl-/': 'toggleComment',
           'Cmd-/': 'toggleComment',
@@ -175,7 +250,7 @@ export default {
         theme: 'custom'
       })
 
-      editorInstance.on('change', debounce(editor => {
+      this.editor.on('change', debounce(editor => {
         this.code = editor.getValue()
         if (this.$emit) {
           this.$emit('input', this.code)
@@ -183,41 +258,19 @@ export default {
         this.run()
       }, 200))
     },
-    initializeSplits() {
-      if (splitInstance) splitInstance.destroy()
-
-      splitInstance = Split(['#editor', '#output'], {
-        direction: window.innerWidth >= 768 ? 'horizontal' : 'vertical',
-        minSize: [400, 400],
-        elementStyle: (dimension, size, gutterSize) => {
-          return {
-            'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
-          }
-        },
-        gutter: (index, direction) => {
-          const gutter = document.createElement('div');
-          if (direction === 'horizontal') {
-            gutter.className = 'px-2 cursor-col-resize z-10'
-            gutter.innerHTML = '<div class="w-px h-full bg-gray-800" />'
-          } else {
-            gutter.className = 'py-2 cursor-row-resize z-10'
-            gutter.innerHTML = '<div class="w-full h-px bg-gray-800" />'
-          }
-          return gutter
-        },
-      })
-    },
     run() {
-      let vm = this
-      vm.output = ''
+      this.output = ''
+
       try {
-        rp.pyEval(vm.code, { stdout: output => vm.output += output })
+        rp.pyEval(this.code, { stdout: output => this.output += output })
       } catch (err) {
         let error = err
         if (err instanceof WebAssembly.RuntimeError) error = window.__RUSTPYTHON_ERROR || err
-        vm.output = error
+        this.output = error
         console.error(error)
       }
+
+      if (!this.isMd) this.dirty = true
     },
     updateSize() {
       this.isMd = window.matchMedia('(min-width: 768px)').matches

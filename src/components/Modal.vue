@@ -5,7 +5,7 @@
         v-show="show"
         class="fixed inset-0 z-10 overflow-y-auto"
       >
-        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="flex items-start justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <transition
             enter-active-class="duration-300 ease-out"
             enter-from-class="opacity-0"
@@ -29,15 +29,15 @@
 
           <transition
             enter-active-class="duration-300 ease-out"
-            enter-from-class="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+            enter-from-class="-translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
             enter-to-class="translate-y-0 opacity-100 sm:scale-100"
             leave-active-class="duration-200 ease-in"
             leave-from-class="translate-y-0 opacity-100 sm:scale-100"
-            leave-to-class="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+            leave-to-class="-translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
           >
             <div
               v-show="show"
-              class="inline-block w-full overflow-hidden text-left align-bottom transition-all transform bg-gray-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg"
+              class="inline-block w-full overflow-hidden text-left align-top transition-all transform bg-gray-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
@@ -77,7 +77,7 @@
 
 <script>
 export default {
-  emits: ['close'],
+  emits: ['closed'],
   props: {
     show: {
       type: Boolean,
@@ -107,7 +107,7 @@ export default {
       if (event.key === 'Escape') this.close()
     },
     close() {
-      this.$emit('close')
+      this.$emit('closed')
     },
   },
 }

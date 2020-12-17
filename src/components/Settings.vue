@@ -1,7 +1,7 @@
 <template>
   <Modal
     :show="show"
-    @close="$emit('close')"
+    @closed="$emit('closed')"
   >
     <template #icon>
       <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-black rounded-full sm:mx-0 sm:h-10 sm:w-10">
@@ -68,7 +68,7 @@ export default {
   components: {
     Modal,
   },
-  emits: ['changed', 'close'],
+  emits: ['changed', 'closed'],
   props: {
     isMobile: {
       type: Boolean,
@@ -81,7 +81,7 @@ export default {
     show: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   methods: {
     onChanged(key, value) {

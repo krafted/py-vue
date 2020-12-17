@@ -16,4 +16,42 @@
   ::selection {
     @apply bg-gray-500 bg-opacity-25;
   }
+
+  .splitpanes {
+    @apply flex w-full h-full;
+  }
+
+  .splitpanes--vertical {
+    @apply flex-row;
+  }
+
+  .splitpanes--horizontal {
+    @apply flex-col;
+  }
+
+  .splitpanes__splitter {
+    @apply relative bg-gray-800;
+    touch-action: none
+  }
+
+  .splitpanes--vertical .splitpanes__splitter {
+    @apply w-px;
+  }
+
+  .splitpanes--horizontal .splitpanes__splitter {
+    @apply h-px;
+  }
+
+  .splitpanes__splitter:before {
+    @apply absolute left-0 top-0 z-10;
+    content: '';
+  }
+
+  .splitpanes--vertical > .splitpanes__splitter:before {
+    @apply cursor-col-resize -left-8 -right-8 h-full
+  }
+
+  .splitpanes--horizontal > .splitpanes__splitter:before {
+    @apply cursor-row-resize -top-8 -bottom-8 w-full
+  }
 }

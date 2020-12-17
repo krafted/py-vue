@@ -12,7 +12,7 @@ module.exports = {
     ],
     options: {
       safelist: {
-        standard: [/cm|CodeMirror/],
+        standard: [/cm|CodeMirror|splitpanes/],
       },
     },
   },
@@ -39,7 +39,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      display: ['group-hover', 'group-focus'],
+      width: ['hover', 'focus'],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

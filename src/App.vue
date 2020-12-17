@@ -52,7 +52,7 @@
                   class="flex py-4 border-b-2 border-transparent focus:outline-none"
                   :class="{
                     'border-yellow-500 text-gray-200': !isMd && activeTab === 'editor',
-                    'border-transparent text-gray-700': isMd || activeTab !== 'editor',
+                    'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': isMd || activeTab !== 'editor',
                   }"
                   @click="activeTab = 'editor'"
                 >
@@ -64,7 +64,7 @@
                   class="flex items-center py-4 border-b-2 focus:outline-none"
                   :class="{
                     'border-yellow-500 text-gray-200': activeTab === 'output',
-                    'border-transparent text-gray-700': activeTab !== 'output',
+                    'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': activeTab !== 'output',
                   }"
                   @click="activeTab = 'output', dirty = false"
                 >

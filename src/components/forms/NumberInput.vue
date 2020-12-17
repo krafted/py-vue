@@ -11,7 +11,7 @@
       :step="step"
       type="number"
       :value="value"
-      :disabled="increments"
+      :disabled="disabled"
       :readonly="increments"
       @input="$emit('update:value', getValue($event.target.value))"
     />
@@ -41,6 +41,11 @@
 export default {
   emits: ['update:value'],
   props: {
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     max: {
       type: String,
       required: false,

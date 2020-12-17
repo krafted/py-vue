@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen">
     <header class="px-4 pt-safe-top">
-      <div class="flex items-center justify-between py-1">
+      <div class="flex items-center justify-between py-1 pl-safe-left pr-safe-right">
         <h1>
           <a
             class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
@@ -41,7 +41,7 @@
       </div>
     </header>
 
-    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row pl-safe-left pr-safe-right">
+    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
       <Splitpanes :horizontal="!isMd">
         <Pane
           class="flex flex-col w-full h-full overflow-hidden"
@@ -49,8 +49,9 @@
         >
           <div class="relative flex flex-col flex-1">
             <header class="flex items-center px-4 border-b border-gray-800 md:py-4">
-              <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block">Editor</h3>
-              <div class="flex items-center -mb-px space-x-4 border-transparent md:hidden">
+              <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block pl-safe-left">Editor</h3>
+
+              <div class="flex items-center -mb-px space-x-4 border-transparent md:hidden pl-safe-left pr-safe-right">
                 <button
                   class="flex py-4 border-b-2 border-transparent focus:outline-none"
                   :class="{
@@ -83,7 +84,7 @@
 
             <div
               v-show="isMd || activeTab === 'editor'"
-              class="flex-1"
+              class="flex-1 pl-safe-left"
             >
               <textarea
                 ref="editor"
@@ -117,7 +118,7 @@
               <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
             </header>
 
-            <div class="flex-1">
+            <div class="flex-1 pr-safe-right">
               <textarea
                 v-model="output"
                 ref="output"

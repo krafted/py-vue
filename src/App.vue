@@ -61,14 +61,14 @@
 
                 <button
                   v-if="!isMd"
-                  class="flex items-center py-4 border-b-2 border-transparent focus:outline-none"
+                  class="flex items-center py-4 border-b-2 focus:outline-none"
                   :class="{
                     'border-yellow-500 text-gray-200': activeTab === 'output',
                     'border-transparent text-gray-700': activeTab !== 'output',
                   }"
                   @click="activeTab = 'output', dirty = false"
                 >
-                  <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
+                  <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Output</h3>
 
                   <span
                     v-if="dirty"

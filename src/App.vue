@@ -41,7 +41,7 @@
       </div>
     </header>
 
-    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
+    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row pl-safe-left pr-safe-right">
       <Splitpanes :horizontal="!isMd">
         <Pane
           class="flex flex-col w-full h-full overflow-hidden"

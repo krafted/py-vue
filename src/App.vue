@@ -46,8 +46,9 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center px-4 border-b border-gray-800">
-              <div class="flex items-center -mb-px space-x-4 border-t border-transparent">
+            <header class="flex items-center px-4 border-b border-gray-800 md:py-4">
+              <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block">Editor</h3>
+              <div class="flex items-center -mb-px space-x-4 border-transparent md:hidden">
                 <button
                   class="flex py-4 border-b-2 border-transparent focus:outline-none"
                   :class="{

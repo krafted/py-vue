@@ -239,7 +239,7 @@ export default {
   methods: {
     fetchSettings() {
       if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
-      this.settings = JSON.parse(localStorage.settings)
+      this.settings = { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) }
     },
     setSetting(key, value, editor = true) {
       this.settings[key] = value

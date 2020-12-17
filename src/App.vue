@@ -47,7 +47,7 @@
         >
           <div class="relative flex flex-col flex-1">
             <header class="flex items-center px-4 border-b border-gray-800">
-              <div class="flex items-center -mb-px space-x-4">
+              <div class="flex items-center -mb-px space-x-4 border-t border-transparent">
                 <button
                   class="flex py-4 border-b-2 border-transparent focus:outline-none"
                   :class="{

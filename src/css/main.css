@@ -13,6 +13,10 @@
     @apply relative;
   }
 
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   ::selection {
     @apply bg-gray-500 bg-opacity-25;
   }

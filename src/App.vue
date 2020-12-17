@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-screen">
-    <header class="flex items-center justify-between px-4 h-14">
+    <header class="flex items-center justify-between px-4 h-14 pt-safe-top">
       <h1>
         <a
           class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"

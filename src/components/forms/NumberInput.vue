@@ -11,6 +11,8 @@
       :step="step"
       type="number"
       :value="value"
+      :disabled="increments"
+      :readonly="increments"
       @input="$emit('update:value', getValue($event.target.value))"
     />
 

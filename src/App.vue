@@ -114,11 +114,11 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center px-4 py-4 border-b border-gray-800">
+            <header class="flex items-center px-4 py-4 border-b border-gray-800 pr-safe-right">
               <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
             </header>
 
-            <div class="flex-1 pr-safe-right">
+            <div class="flex-1 mr-safe-right">
               <textarea
                 v-model="output"
                 ref="output"

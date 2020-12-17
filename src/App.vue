@@ -84,7 +84,7 @@
 
             <div
               v-show="isMd || activeTab === 'editor'"
-              class="flex-1 pl-safe-left"
+              class="flex-1 ml-safe-left"
             >
               <textarea
                 ref="editor"

@@ -20,27 +20,27 @@
       <div class="grid grid-cols-1 gap-3">
         <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
           <span>Font Size</span>
-          <input
-            class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
-            type="number"
+          <NumberInput
+            class="mt-1"
+            increments
             max="26"
             min="10"
             step="1"
-            :value="settings.fontSize"
-            @input="debounce(onChanged('fontSize', parseInt($event.target.value), false), 200)"
+            :value="settings.fontSize.toString()"
+            @update:value="debounce(onChanged('fontSize', $event, false), 200)"
           />
         </label>
 
         <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
           <span>Indent Size</span>
-          <input
-            class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
-            type="number"
+          <NumberInput
+            class="mt-1"
+            increments
             max="8"
             min="1"
             step="1"
-            :value="settings.indentUnit"
-            @input="debounce(onChanged('indentUnit', parseInt($event.target.value)), 200)"
+            :value="settings.indentUnit.toString()"
+            @update:value="debounce(onChanged('indentUnit', $event), 200)"
           />
         </label>
 
@@ -62,14 +62,15 @@
 
         <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
           <span>Line Height</span>
-          <input
-            class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
-            type="number"
+          <NumberInput
+            class="mt-1"
+            increments
             max="2.5"
             min="0.75"
             step="0.25"
-            :value="settings.lineHeight"
-            @input="debounce(onChanged('lineHeight', parseFloat($event.target.value), false), 200)"
+            type="float"
+            :value="settings.lineHeight.toString()"
+            @update:value="debounce(onChanged('lineHeight', $event, false), 200)"
           />
         </label>
       </div>
@@ -91,10 +92,12 @@
 import debounce from 'debounce'
 
 import Modal from './Modal'
+import NumberInput from './forms/NumberInput'
 
 export default {
   components: {
     Modal,
+    NumberInput,
   },
   emits: ['changed', 'closed'],
   props: {

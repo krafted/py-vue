@@ -21,6 +21,16 @@
     @apply bg-gray-500 bg-opacity-25;
   }
 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
   .splitpanes {
     @apply flex w-full h-full;
   }

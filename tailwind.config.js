@@ -53,6 +53,10 @@ module.exports = {
   variants: {
     extend: {
       display: ['group-hover', 'group-focus'],
+      ringColor: ['focus-within'],
+      ringOffsetColor: ['focus-within'],
+      ringOffsetWidth: ['focus-within'],
+      ringWidth: ['focus-within'],
       width: ['hover', 'focus'],
     },
   },

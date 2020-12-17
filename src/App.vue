@@ -238,7 +238,8 @@ export default {
   },
   methods: {
     fetchSettings() {
-      localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
+      if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
+      else localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
       this.settings = JSON.parse(localStorage.settings)
     },
     setSetting(key, value, editor = true) {
@@ -253,8 +254,10 @@ export default {
         autofocus: true,
         extraKeys: {
           'Shift-Tab': 'indentLess',
-          'Ctrl-/': 'toggleComment',
           'Cmd-/': 'toggleComment',
+          'Ctrl-/': 'toggleComment',
+          'Cmd-,': () => this.showSettings = true,
+          'Ctrl-,': () => this.showSettings = true,
           Tab: editor => {
             var spaces = Array(editor.getOption('indentUnit') + 1).join(' ')
             editor.replaceSelection(spaces)

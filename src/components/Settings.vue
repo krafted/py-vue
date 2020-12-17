@@ -19,6 +19,19 @@
     <template #content>
       <div class="grid grid-cols-1 gap-3">
         <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
+          <span>Font Size</span>
+          <input
+            class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
+            type="number"
+            max="26"
+            min="10"
+            step="1"
+            :value="settings.fontSize"
+            @input="debounce(onChanged('fontSize', parseInt($event.target.value), false), 200)"
+          />
+        </label>
+
+        <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
           <span>Indent Size</span>
           <input
             class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
@@ -38,11 +51,26 @@
             :value="settings.keyMap"
             @input="debounce(onChanged('keyMap', $event.target.value), 200)"
           >
-            <option value="default">Default</option>
-            <option value="emacs">Emacs</option>
-            <option value="sublime">Sublime Text</option>
-            <option value="vim">Vim</option>
+            <option
+              v-for="option in keyMapOptions"
+              :key="option.key"
+              :value="option.key"
+              v-text="option.value"
+            />
           </select>
+        </label>
+
+        <label class="block text-sm font-medium tracking-wide uppercase sm:text-xs">
+          <span>Line Height</span>
+          <input
+            class="block w-full mt-1 bg-black border-0 border-none rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-yellow-500"
+            type="number"
+            max="2.5"
+            min="0.75"
+            step="0.25"
+            :value="settings.lineHeight"
+            @input="debounce(onChanged('lineHeight', parseFloat($event.target.value), false), 200)"
+          />
         </label>
       </div>
     </template>
@@ -81,6 +109,16 @@ export default {
     show: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    keyMapOptions() {
+      return [
+        {key: 'default', value: 'Default'},
+        {key: 'emacs', value: 'Emacs'},
+        {key: 'sublime', value: 'Sublime Text'},
+        {key: 'vim', value: 'Vim'},
+      ]
     },
   },
   methods: {

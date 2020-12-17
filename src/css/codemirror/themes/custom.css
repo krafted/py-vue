@@ -1,5 +1,5 @@
 .cm-s-custom.CodeMirror {
-  @apply bg-gray-900 text-gray-400;
+  @apply bg-gray-900 text-gray-400 text-inherit;
 }
 
 .cm-s-custom .CodeMirror-gutters {

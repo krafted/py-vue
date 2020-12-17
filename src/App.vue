@@ -34,7 +34,7 @@
             :is-mobile="isMobile()"
             :settings="settings"
             :show="showSettings"
-            @changed="setSetting($event.key, $event.value)"
+            @changed="setSetting($event.key, $event.value, $event.editor || true)"
             @closed="showSettings = false"
           />
         </div>
@@ -85,6 +85,10 @@
             <div
               v-show="isMd || activeTab === 'editor'"
               class="flex-1 ml-safe-left"
+              :style="{
+                fontSize: `${settings.fontSize}px`,
+                lineHeight: `${settings.lineHeight}rem`,
+              }"
             >
               <textarea
                 ref="editor"
@@ -95,11 +99,15 @@
             <div
               v-if="!isMd && activeTab === 'output'"
               class="flex-1"
+              :style="{
+                fontSize: `${settings.fontSize}px`,
+                lineHeight: `${settings.lineHeight}rem`,
+              }"
             >
               <textarea
                 v-model="output"
                 ref="output"
-                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent border-0 border-none resize-none focus:ring-0 focus:outline-none"
+                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-400 bg-transparent border-0 border-none resize-none text-inherit leading-inherit focus:ring-0 focus:outline-none"
                 readonly
                 @click="dirty = false"
                 @focus="dirty = false"
@@ -118,11 +126,17 @@
               <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
             </header>
 
-            <div class="flex-1 mr-safe-right">
+            <div
+              class="flex-1 mr-safe-right"
+              :style="{
+                fontSize: `${settings.fontSize}px`,
+                lineHeight: `${settings.lineHeight}rem`,
+              }"
+            >
               <textarea
                 v-model="output"
                 ref="output"
-                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono leading-8 text-gray-400 bg-transparent border-0 border-none resize-none focus:ring-0 focus:outline-none"
+                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-400 bg-transparent border-0 border-none resize-none leading-inherit text-inherit focus:ring-0 focus:outline-none"
                 readonly
                 @click="dirty = false"
                 @focus="dirty = false"
@@ -153,8 +167,10 @@ import 'codemirror/keymap/sublime'
 import 'codemirror/keymap/vim'
 
 const DEFAULT_SETTINGS = {
+  fontSize: 16,
   indentUnit: 2,
   keyMap: 'default',
+  lineHeight: 2,
 }
 const INITIAL_CODE = dedent`
   def fib(n):
@@ -225,10 +241,10 @@ export default {
       if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
       this.settings = JSON.parse(localStorage.settings)
     },
-    setSetting(key, value) {
+    setSetting(key, value, editor = true) {
       this.settings[key] = value
       localStorage.settings = JSON.stringify(this.settings)
-      this.editor.setOption(key, value)
+      if (editor) this.editor.setOption(key, value)
     },
     initializeEditor() {
       if (this.editor) this.editor.destroy()

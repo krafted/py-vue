@@ -20,8 +20,8 @@
 
             <span
               v-if="!isMobile()"
-              class="hidden mr-2 font-mono text-xs group-hover:inline group-focus:inline"
-              v-text="isMac ? 'CMD + ,' : 'CTRL + ,'"
+              class="flex-shrink-0 hidden mr-2 font-mono text-sm group-hover:inline group-focus:inline"
+              v-text="isMac ? '⌘,' : '^,'"
             />
 
             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,34 +51,43 @@
             <header class="flex items-center px-4 border-b border-gray-800 md:py-4">
               <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block pl-safe-left">Editor</h3>
 
-              <div class="flex items-center -mb-px space-x-4 border-transparent md:hidden pl-safe-left pr-safe-right">
-                <button
-                  class="flex py-4 border-b-2 border-transparent focus:outline-none"
-                  :class="{
-                    'border-yellow-500 text-gray-200': !isMd && activeTab === 'editor',
-                    'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': isMd || activeTab !== 'editor',
-                  }"
-                  @click="activeTab = 'editor'"
-                >
-                  <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Editor</h3>
-                </button>
+              <div class="flex items-center justify-between w-full -mb-px space-x-4 border-transparent md:hidden pl-safe-left pr-safe-right">
+                <div class="flex items-center space-x-4">
+                  <button
+                    class="flex py-4 border-b-2 border-transparent focus:outline-none"
+                    :class="{
+                      'border-yellow-500 text-gray-200': !isMd && activeTab === 'editor',
+                      'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': isMd || activeTab !== 'editor',
+                    }"
+                    @click="activeTab = 'editor'"
+                  >
+                    <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Editor</h3>
+                  </button>
 
-                <button
-                  v-if="!isMd"
-                  class="flex items-center py-4 border-b-2 focus:outline-none"
-                  :class="{
-                    'border-yellow-500 text-gray-200': activeTab === 'output',
-                    'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': activeTab !== 'output',
-                  }"
-                  @click="activeTab = 'output', dirty = false"
-                >
-                  <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Output</h3>
+                  <button
+                    v-if="!isMd"
+                    class="flex items-center py-4 border-b-2 focus:outline-none"
+                    :class="{
+                      'border-yellow-500 text-gray-200': activeTab === 'output',
+                      'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': activeTab !== 'output',
+                    }"
+                    @click="activeTab = 'output', dirty = false"
+                  >
+                    <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Output</h3>
 
-                  <span
-                    v-if="dirty"
-                    class="w-1 h-1 ml-2 bg-yellow-500 rounded-full"
-                  />
-                </button>
+                    <span
+                      v-if="dirty"
+                      class="w-1 h-1 ml-2 bg-yellow-500 rounded-full"
+                    />
+                  </button>
+                </div>
+
+                <span
+                  v-if="error"
+                  class="mr-4 font-mono text-xs font-semibold tracking-wide text-red-500 uppercase"
+                >
+                  Error
+                </span>
               </div>
             </header>
 
@@ -122,8 +131,17 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center px-4 py-4 border-b border-gray-800 pr-safe-right">
-              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">Output</h3>
+            <header class="flex items-center justify-between w-full px-4 py-4 border-b border-gray-800 pr-safe-right">
+              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">
+                Output
+              </h3>
+
+              <span
+                v-if="error"
+                class="mr-4 font-mono text-xs font-semibold tracking-wide text-red-500 uppercase"
+              >
+                Error
+              </span>
             </header>
 
             <div
@@ -156,7 +174,6 @@ import debounce from 'debounce'
 import dedent from 'dedent'
 import hotkeys from 'hotkeys-js'
 import isMobile from 'is-mobile'
-import * as rp from 'rustpython_wasm'
 
 import Settings from './components/Settings'
 
@@ -188,6 +205,7 @@ const INITIAL_CODE = dedent`
 
   main()
 `
+
 export default {
   name: 'App',
   components: {
@@ -200,10 +218,12 @@ export default {
     code: INITIAL_CODE,
     dirty: false,
     editor: null,
+    error: false,
     isMd: false,
     output: '',
     settings: DEFAULT_SETTINGS,
     showSettings: false,
+    worker: null,
   }),
   computed: {
     isMac() {
@@ -218,18 +238,15 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchSettings()
+  async mounted() {
     this.initializeEditor()
+    this.fetchSettings()
     this.updateSize()
-    this.run()
+    this.addHotKeys()
+
+    await this.loadInterpreter()
 
     window.addEventListener('resize', debounce(this.updateSize, 200))
-
-    hotkeys(this.isMac ? 'cmd+,' : 'ctrl+,', (event) => {      
-      this.showSettings = true
-      event.preventDefault()
-    })
   },
   unmounted() {
     window.removeEventListener('resize', debounce(this.updateSize, 200))
@@ -237,6 +254,12 @@ export default {
     hotkeys.unbind(this.isMac ? 'cmd+,' : 'ctrl+,')
   },
   methods: {
+    addHotKeys() {
+      hotkeys(this.isMac ? 'cmd+,' : 'ctrl+,', (event) => {      
+        this.showSettings = true
+        event.preventDefault()
+      })
+    },
     fetchSettings() {
       if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
       else localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
@@ -280,18 +303,51 @@ export default {
         }
         this.run()
       }, 200))
+
+      this.worker = {
+        runPython: this.run
+      }
+      window.worker = this.worker
+    },
+    async loadInterpreter() {
+      /* eslint-disable */
+      await languagePluginLoader
+
+      pyodide.runPythonAsync(`
+        import io, code, sys
+        from js import worker
+        sys.stdout = io.StringIO()
+        sys.stderr = io.StringIO()
+        worker.runPython()
+      `)
+      /* eslint-enable */
     },
     run() {
       this.output = ''
+      this.error = false
 
+      /* eslint-disable */
+      pyodide.runPython(`
+        sys.stdout.truncate(0)
+        sys.stdout.seek(0)
+        sys.stderr.truncate(0)
+        sys.stderr.seek(0)
+      `)
       try {
-        rp.pyEval(this.code, { stdout: output => this.output += output })
-      } catch (err) {
-        let error = err
-        if (err instanceof WebAssembly.RuntimeError) error = window.__RUSTPYTHON_ERROR || err
+        pyodide.runPython(this.code)
+        const stderr = pyodide.runPython("sys.stderr.getvalue()").trim()
+        if (stderr) {
+          this.error = true
+          this.output = stderr
+        } else {
+          const stdout = pyodide.runPython("sys.stdout.getvalue()").trim()
+          if (stdout) this.output = stdout
+        }
+      } catch (error) {
+        this.error = true
         this.output = error
-        console.error(error)
       }
+      /* eslint-enable */
 
       if (!this.isMd) this.dirty = true
     },

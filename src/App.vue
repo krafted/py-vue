@@ -14,6 +14,22 @@
         <div class="flex items-center justify-end -mr-2 space-x-2">
           <button
             class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
+            @click="run"
+          >
+            <span
+              v-if="!isMobile()"
+              class="flex-shrink-0 hidden mr-2 font-mono text-sm group-hover:inline group-focus:inline"
+              v-text="'Run'"
+            />
+
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+
+          <button
+            class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
             @click="showSettings = true"
           >
             <span class="sr-only">Settings</span>

@@ -187,7 +187,6 @@
 import CodeMirror from 'codemirror'
 import { Splitpanes, Pane } from 'splitpanes'
 import debounce from 'debounce'
-import dedent from 'dedent'
 import hotkeys from 'hotkeys-js'
 import isMobile from 'is-mobile'
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
   lang="en"
-  class="font-sans antialiased bg-gray-900"
+  class="fixed h-full overflow-hidden font-sans antialiased bg-gray-900"
 >
   <head>
     <title>Py</title>
@@ -43,11 +43,11 @@
     <link rel="apple-touch-startup-image" href="/pwa/images/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js"></script>
   </head>
-  <body>
+  <body class="fixed flex w-full min-h-full overflow-hidden">
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app" class="flex flex-col flex-none w-full"></div>
     <div id="modals"></div>
     <!-- built files will be auto injected -->
   </body>

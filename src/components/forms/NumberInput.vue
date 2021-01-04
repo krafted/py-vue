@@ -80,11 +80,11 @@ export default {
       return this.type === 'int' ? parseInt(value) : parseFloat(value)
     },
     decrement() {
-      if (this.getValue(this.value) < this.getValue(this.min)) return
+      if (this.getValue(this.value) <= this.getValue(this.min)) return
       this.$emit('update:value', this.getValue(this.value) - this.getValue(this.step))
     },
     increment() {
-      if (this.getValue(this.value) > this.getValue(this.max)) return
+      if (this.getValue(this.value) >= this.getValue(this.max)) return
       this.$emit('update:value', this.getValue(this.value) + this.getValue(this.step))
     },
   },

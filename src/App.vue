@@ -206,20 +206,25 @@ const DEFAULT_SETTINGS = {
   lineHeight: 2,
 }
 const INITIAL_CODE = dedent`
-  def fib(n):
-    n1 = 0
-    n2 = 1
+  """
+  Welcome to Py!
+  """
 
-    print(f"{n} numbers of Fibonacci sequence:")
+  from random import randint
 
-    for i in range(n):
-      print(f"\t{i + 1} => {n1}")
-      n1, n2 = n2, n1 + n2
+  # Produces a list of random numbers and their squares.
+  # Random numbers start at min and end at max.
+  def get_random_squares(min, max):
+    n = randint(min, max)
+    nums = [str(num) for num in range(min, n + 1)]
+    squares = [str(num ** 2) for num in range(min, n + 1)]
+    row_format ="\t{:<3}" * 3
 
-  def main():
-    fib(10)
+    print(f"Squares 1..{n}:\n")
+    for num, square in zip(nums, squares):
+      print(row_format.format(num, '=>', square))
 
-  main()
+  get_random_squares(min=1, max=10)
 `
 
 export default {

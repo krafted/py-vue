@@ -64,7 +64,7 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center px-4 border-b border-gray-800 md:py-4">
+            <header class="flex items-center justify-between px-4 border-b border-gray-800 md:py-4">
               <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block pl-safe-left">Editor</h3>
 
               <div class="flex items-center justify-between w-full -mb-px space-x-4 border-transparent md:hidden pl-safe-left pr-safe-right">
@@ -91,20 +91,56 @@
                   >
                     <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Output</h3>
 
-                    <span
-                      v-if="dirty"
-                      class="w-1 h-1 ml-2 bg-yellow-500 rounded-full"
-                    />
+
+                    <transition
+                      enter-active-class="duration-300 ease-out"
+                      enter-from-class="opacity-0"
+                      enter-to-class="opacity-100"
+                      leave-active-class="duration-200 ease-in"
+                      leave-from-class="opacity-100"
+                      leave-to-class="opacity-0"
+                    >
+                      <span
+                        v-if="dirty || error"
+                        class="w-1 h-1 ml-2 transition-opacity rounded-full"
+                        :class="error ? 'bg-red-500' : 'bg-yellow-500'"
+                      />
+                    </transition>
                   </button>
                 </div>
-
-                <span
-                  v-if="error"
-                  class="mr-4 font-mono text-xs font-semibold tracking-wide text-red-500 uppercase"
-                >
-                  Error
-                </span>
               </div>
+
+
+              <transition
+                enter-active-class="duration-300 ease-out"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="duration-200 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+              >
+                <p
+                  v-if="loading"
+                  class="mr-4 text-gray-700 transition-opacity dark:text-gray-500 md:mr-0"
+                >
+                  <span class="sr-only">Loading</span>
+                  <svg fill="none" viewBox="0 0 24 24" class="w-4 h-4 animate-spin">
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    />
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                </p>
+              </transition>
             </header>
 
             <div
@@ -147,17 +183,25 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center justify-between w-full px-4 py-4 border-b border-gray-800 pr-safe-right">
+            <header class="flex items-center w-full px-4 py-4 border-b border-gray-800 pr-safe-right">
               <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">
                 Output
               </h3>
 
-              <span
-                v-if="error"
-                class="mr-4 font-mono text-xs font-semibold tracking-wide text-red-500 uppercase"
+              <transition
+                enter-active-class="duration-300 ease-out"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="duration-200 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
               >
-                Error
-              </span>
+                <span
+                  v-if="dirty || error"
+                  class="w-1 h-1 ml-2 transition-opacity rounded-full"
+                  :class="error ? 'bg-red-500' : 'bg-yellow-500'"
+                />
+              </transition>
             </header>
 
             <div
@@ -239,6 +283,7 @@ export default {
     editor: null,
     error: false,
     isMd: false,
+    loading: true,
     output: '',
     settings: DEFAULT_SETTINGS,
     showSettings: false,
@@ -342,6 +387,7 @@ export default {
       /* eslint-enable */
     },
     run() {
+      this.loading = true
       this.output = ''
       this.error = false
 
@@ -369,6 +415,7 @@ export default {
       /* eslint-enable */
 
       if (!this.isMd) this.dirty = true
+      setTimeout(() => this.loading = false, 100)
     },
     updateSize() {
       this.isMd = window.matchMedia('(min-width: 768px)').matches

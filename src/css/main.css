@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import '../../node_modules/codemirror/lib/codemirror.css';
+@import './codemirror/base.css';
+@import './codemirror/themes/dark.css';
 
+/*! @import */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-  @import "../../node_modules/codemirror/lib/codemirror.css";
-  @import "./codemirror/base.css";
-  @import "./codemirror/themes/custom.css";
-
   * {
     @apply relative;
   }
@@ -57,15 +57,15 @@
   }
 
   .splitpanes__splitter:before {
-    @apply absolute left-0 top-0 z-10;
+    @apply absolute top-0 left-0 z-10;
     content: '';
   }
 
   .splitpanes--vertical > .splitpanes__splitter:before {
-    @apply cursor-col-resize -left-8 -right-8 h-full
+    @apply cursor-col-resize -left-4 -right-4 h-full
   }
 
   .splitpanes--horizontal > .splitpanes__splitter:before {
-    @apply cursor-row-resize -top-8 -bottom-8 w-full
+    @apply cursor-row-resize -top-4 -bottom-4 w-full
   }
 }

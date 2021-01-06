@@ -62,10 +62,7 @@
                 </div>
               </div>
               <div class="px-4 py-3 bg-gray-800 sm:px-6 sm:flex sm:flex-row-reverse">
-                <slot
-                  name="actions"
-                  :close="close"
-                />
+                <slot name="actions" />
               </div>
             </div>
           </transition>
@@ -76,39 +73,27 @@
 </template>
 
 <script>
+import { inject, onMounted, onUnmounted } from 'vue'
+import hotkeys from 'hotkeys-js'
+
 export default {
-  emits: ['closed'],
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  watch: {
-    show: {
-      immediate: true,
-      handler: function(show) {
-        if (show) {
-          document.body.style.overflow = 'hidden'
-        } else {
-          document.body.style.overflow = null
-        }
-      }
+  setup() {
+    const show = inject('show')
+    const close = () => show.value = false
+
+    onMounted(() => {
+      hotkeys('esc', (event) => {
+        show.value = false
+        event.preventDefault()
+      })
+    })
+
+    onUnmounted(() => hotkeys.unbind('esc'))
+
+    return {
+      close,
+      show,
     }
-  },
-  mounted() {
-    window.addEventListener('keydown', this.handleEsc)
-  },
-  unmounted() {
-    window.removeEventListener('keydown', this.handleEsc)
-  },
-  methods: {
-    handleEsc(event) {
-      if (event.key === 'Escape') this.close()
-    },
-    close() {
-      this.$emit('closed')
-    },
-  },
+  }
 }
 </script>

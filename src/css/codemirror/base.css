@@ -10,10 +10,6 @@
     @apply px-2 pb-4;
 }
 
-.CodeMirror-gutter-elt {
-    @apply cursor-pointer;
-}
-
 .CodeMirror-lines {
     @apply pr-0 pb-4;
 }

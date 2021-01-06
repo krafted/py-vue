@@ -1,61 +1,6 @@
 <template>
   <div class="flex flex-col h-screen">
-    <header class="px-4 pt-safe-top">
-      <div class="flex items-center justify-between py-1 pl-safe-left pr-safe-right">
-        <h1>
-          <a
-            class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
-            href="/"
-          >
-            Py
-          </a>
-        </h1>
-
-        <div class="flex items-center justify-end -mr-2 space-x-2">
-          <button
-            class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
-            @click="run"
-          >
-            <span
-              v-if="!isMobile()"
-              class="flex-shrink-0 hidden mr-2 font-mono text-sm group-hover:inline group-focus:inline"
-              v-text="'Run'"
-            />
-
-            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </button>
-
-          <button
-            class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
-            @click="showSettings = true"
-          >
-            <span class="sr-only">Settings</span>
-
-            <span
-              v-if="!isMobile()"
-              class="flex-shrink-0 hidden mr-2 font-mono text-sm group-hover:inline group-focus:inline"
-              v-text="isMac ? '⌘,' : '^,'"
-            />
-
-            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </button>
-
-          <Settings
-            :is-mobile="isMobile()"
-            :settings="settings"
-            :show="showSettings"
-            @changed="setSetting($event.key, $event.value, $event.editor || true)"
-            @closed="showSettings = false"
-          />
-        </div>
-      </div>
-    </header>
+    <Header />
 
     <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
       <Splitpanes :horizontal="!isMd">
@@ -64,116 +9,10 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center justify-between px-4 border-b border-gray-800 md:py-4">
-              <h3 class="hidden font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none md:block pl-safe-left">Editor</h3>
+            <TabBar />
 
-              <div class="flex items-center justify-between w-full -mb-px space-x-4 border-transparent md:hidden pl-safe-left pr-safe-right">
-                <div class="flex items-center space-x-4">
-                  <button
-                    class="flex py-4 border-b-2 border-transparent focus:outline-none"
-                    :class="{
-                      'border-yellow-500 text-gray-200': !isMd && activeTab === 'editor',
-                      'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': isMd || activeTab !== 'editor',
-                    }"
-                    @click="activeTab = 'editor'"
-                  >
-                    <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Editor</h3>
-                  </button>
-
-                  <button
-                    v-if="!isMd"
-                    class="flex items-center py-4 border-b-2 focus:outline-none"
-                    :class="{
-                      'border-yellow-500 text-gray-200': activeTab === 'output',
-                      'border-transparent text-gray-700 hover:text-gray-400 focus:text-gray-400': activeTab !== 'output',
-                    }"
-                    @click="activeTab = 'output', dirty = false"
-                  >
-                    <h3 class="font-mono text-xs font-semibold tracking-wide uppercase select-none">Output</h3>
-
-
-                    <transition
-                      enter-active-class="duration-300 ease-out"
-                      enter-from-class="opacity-0"
-                      enter-to-class="opacity-100"
-                      leave-active-class="duration-200 ease-in"
-                      leave-from-class="opacity-100"
-                      leave-to-class="opacity-0"
-                    >
-                      <span
-                        v-if="dirty || error"
-                        class="w-1 h-1 ml-2 transition-opacity rounded-full"
-                        :class="error ? 'bg-red-500' : 'bg-yellow-500'"
-                      />
-                    </transition>
-                  </button>
-                </div>
-              </div>
-
-
-              <transition
-                enter-active-class="duration-300 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="duration-200 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-              >
-                <p
-                  v-if="loading"
-                  class="mr-4 text-gray-700 transition-opacity dark:text-gray-500 md:mr-0"
-                >
-                  <span class="sr-only">Loading</span>
-                  <svg fill="none" viewBox="0 0 24 24" class="w-4 h-4 animate-spin">
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    />
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                </p>
-              </transition>
-            </header>
-
-            <div
-              v-show="isMd || activeTab === 'editor'"
-              class="flex-1 ml-safe-left"
-              :style="{
-                fontSize: `${settings.fontSize}px`,
-                lineHeight: `${settings.lineHeight}rem`,
-              }"
-            >
-              <textarea
-                ref="editor"
-                v-model="code"
-              />
-            </div>
-
-            <div
-              v-if="!isMd && activeTab === 'output'"
-              class="flex-1"
-              :style="{
-                fontSize: `${settings.fontSize}px`,
-                lineHeight: `${settings.lineHeight}rem`,
-              }"
-            >
-              <textarea
-                v-model="output"
-                ref="output"
-                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-400 bg-transparent border-0 border-none resize-none text-inherit leading-inherit focus:ring-0 focus:outline-none"
-                readonly
-                @click="dirty = false"
-                @focus="dirty = false"
-              />
-            </div>
+            <Editor v-if="state.activeTab === 'editor'" />
+            <Output v-if="state.activeTab === 'output'" />
           </div>
         </Pane>
 
@@ -183,7 +22,7 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center w-full px-4 py-4 border-b border-gray-800 pr-safe-right">
+            <header class="flex items-center w-full px-4 py-3.5 border-b border-gray-800 pr-safe-right">
               <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">
                 Output
               </h3>
@@ -192,9 +31,6 @@
                 enter-active-class="duration-300 ease-out"
                 enter-from-class="opacity-0"
                 enter-to-class="opacity-100"
-                leave-active-class="duration-200 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
               >
                 <span
                   v-if="dirty || error"
@@ -204,223 +40,175 @@
               </transition>
             </header>
 
-            <div
-              class="flex-1 mr-safe-right"
-              :style="{
-                fontSize: `${settings.fontSize}px`,
-                lineHeight: `${settings.lineHeight}rem`,
-              }"
-            >
-              <textarea
-                v-model="output"
-                ref="output"
-                class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-400 bg-transparent border-0 border-none resize-none leading-inherit text-inherit focus:ring-0 focus:outline-none"
-                readonly
-                @click="dirty = false"
-                @focus="dirty = false"
-              />
-            </div>
+            <Output />
           </div>
         </Pane>
       </Splitpanes>
     </div>
   </div>
+
+  <transition
+    enter-active-class="duration-300 ease-out"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="duration-200 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <p
+      v-if="loading"
+      class="fixed text-gray-500 transition-opacity bottom-4 right-4"
+    >
+      <span class="sr-only">Loading</span>
+
+      <svg fill="none" viewBox="0 0 24 24" class="w-6 h-6 animate-spin">
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
+      </svg>
+    </p>
+  </transition>
+
+  <Settings @update:setting="updateSetting" />
 </template>
 
 <script>
-import CodeMirror from 'codemirror'
+import { onMounted, provide, reactive, ref, toRaw, watchEffect } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
-import debounce from 'debounce'
-import hotkeys from 'hotkeys-js'
+import Header from './components/Header.vue'
+import Editor from './components/Editor.vue'
+import Output from './components/Output.vue'
+import Settings from './components/Settings.vue'
+import TabBar from './components/TabBar.vue'
+import useMedia from './hooks/useMedia'
 import isMobile from 'is-mobile'
-
-import Settings from './components/Settings'
-
-import 'codemirror/mode/python/python'
-import 'codemirror/addon/selection/active-line'
-import 'codemirror/keymap/emacs'
-import 'codemirror/keymap/sublime'
-import 'codemirror/keymap/vim'
-
-const DEFAULT_SETTINGS = {
-  fontSize: 16,
-  indentUnit: 2,
-  keyMap: 'default',
-  lineHeight: 2,
-}
-const INITIAL_CODE = String.raw`"""
-Welcome to Py!
-"""
-
-from random import randint
-
-# Produces a list of random numbers and their squares.
-# Random numbers start at min and end at max.
-def get_random_squares(min, max):
-  n = randint(min, max)
-  nums = [str(num) for num in range(min, n + 1)]
-  squares = [str(num ** 2) for num in range(min, n + 1)]
-  row_format ="\t{:<3}" * 3
-
-  print(f"Squares 1..{n}:\n")
-  for num, square in zip(nums, squares):
-    print(row_format.format(num, '=>', square))
-
-get_random_squares(min=1, max=10)
-`
+import DEFAULT_SETTINGS from './config/settings'
+import defaultContent from './config/defaultContent'
+import dedent from 'dedent'
 
 export default {
-  name: 'App',
   components: {
+    Editor,
+    Header,
+    Output,
     Pane,
     Settings,
     Splitpanes,
+    TabBar,
   },
-  data: () => ({
-    activeTab: 'editor',
-    code: INITIAL_CODE,
-    dirty: false,
-    editor: null,
-    error: false,
-    isMd: false,
-    loading: true,
-    output: '',
-    settings: DEFAULT_SETTINGS,
-    showSettings: false,
-    worker: null,
-  }),
-  computed: {
-    isMac() {
-      return navigator.userAgent.indexOf('Mac') !== -1
-    },
-  },
-  watch: {
-    isMd: {
-      immediate: true,
-      handler: function(isMd) {
-        if (isMd) this.activeTab = 'editor'
-      }
-    }
-  },
-  async mounted() {
-    this.initializeEditor()
-    this.fetchSettings()
-    this.updateSize()
-    this.addHotKeys()
-
-    await this.loadInterpreter()
-
-    window.addEventListener('resize', debounce(this.updateSize, 200))
-  },
-  unmounted() {
-    window.removeEventListener('resize', debounce(this.updateSize, 200))
-
-    hotkeys.unbind(this.isMac ? 'cmd+,' : 'ctrl+,')
-  },
-  methods: {
-    addHotKeys() {
-      hotkeys(this.isMac ? 'cmd+,' : 'ctrl+,', (event) => {      
-        this.showSettings = true
-        event.preventDefault()
-      })
-    },
-    fetchSettings() {
-      if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
-      else localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
-      this.settings = JSON.parse(localStorage.settings)
-    },
-    setSetting(key, value, editor = true) {
-      this.settings[key] = value
-      localStorage.settings = JSON.stringify(this.settings)
-      if (editor) this.editor.setOption(key, value)
-    },
-    initializeEditor() {
-      if (this.editor) this.editor.destroy()
-
-      this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
-        autofocus: true,
-        extraKeys: {
-          'Shift-Tab': 'indentLess',
-          'Cmd-/': 'toggleComment',
-          'Ctrl-/': 'toggleComment',
-          'Cmd-,': () => this.showSettings = true,
-          'Ctrl-,': () => this.showSettings = true,
-          Tab: editor => {
-            var spaces = Array(editor.getOption('indentUnit') + 1).join(' ')
-            editor.replaceSelection(spaces)
-          }
-        },
-        gutters: ["CodeMirror-linenumbers"],
-        indentUnit: parseInt(this.settings.indentUnit),
-        keyMap: isMobile() ? 'default' : this.settings.keyMap,
-        lineNumbers: true,
-        lineWrapping: true,
-        mode: 'text/x-python',
-        styleActiveLine: true,
-        theme: 'custom'
-      })
-
-      this.editor.on('change', debounce(editor => {
-        this.code = editor.getValue()
-        if (this.$emit) {
-          this.$emit('input', this.code)
-        }
-        this.run()
-      }, 200))
-
-      this.worker = {
-        runPython: this.run
-      }
-      window.worker = this.worker
-    },
-    async loadInterpreter() {
+  setup() {
+    const state = reactive({
+      activeTab: 'editor',
+      settings: DEFAULT_SETTINGS
+    })
+    const loading = ref(true)
+    const content = ref(defaultContent)
+    const output = ref('')
+    const editor = ref(null)
+    const dirty = ref(false)
+    const error = ref(false)
+    const showSettings = ref(false)
+    const isMac = ref(navigator.userAgent.indexOf('Mac') !== -1)
+    const isMd = useMedia('(min-width: 768px)')
+    const clear = async () => {
       /* eslint-disable */
-      await languagePluginLoader
-
-      pyodide.runPythonAsync(`
-        import io, code, sys
-        from js import worker
-        sys.stdout = io.StringIO()
-        sys.stderr = io.StringIO()
-        worker.runPython()
-      `)
-      /* eslint-enable */
-    },
-    run() {
-      this.loading = true
-      this.output = ''
-      this.error = false
-
-      /* eslint-disable */
-      pyodide.runPython(`
+      await pyodide.runPython(dedent`
         sys.stdout.truncate(0)
         sys.stdout.seek(0)
         sys.stderr.truncate(0)
         sys.stderr.seek(0)
       `)
+      /* eslint-enable */
+    }
+    const run = async () => {
+      loading.value = true
+      output.value = ''
+      error.value = false
+
+      await clear()
+
       try {
-        pyodide.runPython(this.code)
-        const stderr = pyodide.runPython("sys.stderr.getvalue()").trim()
+        /* eslint-disable */
+        await pyodide.runPython(content.value)
+        const stderr = (await pyodide.runPython("sys.stderr.getvalue()")).trim()
         if (stderr) {
-          this.error = true
-          this.output = stderr
+          error.value = true
+          output.value = stderr
         } else {
-          const stdout = pyodide.runPython("sys.stdout.getvalue()").trim()
-          if (stdout) this.output = stdout
+          const stdout = (await pyodide.runPython("sys.stdout.getvalue()")).trim()
+          if (stdout) output.value = stdout
         }
-      } catch (error) {
-        this.error = true
-        this.output = error
+          /* eslint-enable */
+      } catch (e) {
+        error.value = true
+        output.value = e
       }
+
+      loading.value = false
+      dirty.value = true
+    }
+    const updateSetting = ({ key, value }) => {
+      state.settings[key] = value
+      localStorage.settings = JSON.stringify(state.settings)
+      editor.value.setOption(key, value)
+    }
+
+    watchEffect(() => {
+      if (isMd) state.activeTab = 'editor'
+    })
+
+    onMounted(() => {
+      if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
+      else localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
+      state.settings = JSON.parse(localStorage.settings)
+      Object.keys(toRaw(state.settings)).forEach(key => editor.value.setOption(key, state.settings[key]))
+    })
+
+    onMounted(async () => {
+      /* eslint-disable */
+      await languagePluginLoader
+
+      pyodide.runPython(dedent`
+        import io, code, sys
+        sys.stdout = io.StringIO()
+        sys.stderr = io.StringIO()
+      `)
       /* eslint-enable */
 
-      if (!this.isMd) this.dirty = true
-      setTimeout(() => this.loading = false, 100)
-    },
-    updateSize() {
-      this.isMd = window.matchMedia('(min-width: 768px)').matches
-    },
-    isMobile,
+      await run()
+    })
+
+    provide('app', state)
+    provide('error', error)
+    provide('loading', loading)
+    provide('content', content)
+    provide('output', output)
+    provide('editor', editor)
+    provide('dirty', dirty)
+    provide('isMac', isMac)
+    provide('isMd', isMd)
+    provide('isMobile', isMobile())
+    provide('run', run)
+    provide('showSettings', showSettings)
+
+    return {
+      dirty,
+      error,
+      isMd,
+      loading,
+      state,
+      updateSetting,
+    }
   }
 }
 </script>

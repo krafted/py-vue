@@ -24,7 +24,7 @@
   input,
   textarea,
   [contenteditable] {
-    caret-color: theme('primary.500');
+    caret-color: theme('colors.primary.500');
   }
 
   input::-webkit-outer-spin-button,

@@ -42,6 +42,7 @@
         </FormInput>
 
         <FormInput
+          v-if="!isMobile"
           label="Keymap"
           :value="app.settings.keyMap"
           @update:value="updateSetting('keyMap', $event)"
@@ -107,6 +108,7 @@ export default {
   setup(_, { emit }) {
     const app = inject('app')
     const isMac = inject('isMac')
+    const isMobile = inject('isMobile')
     const show = inject('showSettings')
     const updateSetting = (key, value) => emit('update:setting', { key, value })
 
@@ -124,6 +126,7 @@ export default {
 
     return {
       app,
+      isMobile,
       keyMapOptions: [
         { key: 'default', value: 'Default' },
         { key: 'emacs', value: 'Emacs' },

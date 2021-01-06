@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import '../../node_modules/codemirror/lib/codemirror.css';
 @import './codemirror/base.css';
-@import './codemirror/themes/dark.css';
+@import './codemirror/themes/custom.css';
 
 /*! @import */
 @tailwind base;
@@ -44,7 +44,7 @@
   }
 
   .splitpanes__splitter {
-    @apply relative bg-gray-800;
+    @apply relative bg-gray-100 dark:bg-gray-800;
     touch-action: none
   }
 

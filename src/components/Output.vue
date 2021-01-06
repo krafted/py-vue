@@ -7,7 +7,7 @@
     }"
   >
     <textarea
-      class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-400 bg-transparent border-0 border-none resize-none leading-inherit text-inherit focus:ring-0 focus:outline-none"
+      class="absolute inset-0 flex-shrink-0 w-full h-full px-4 py-1 pb-4 font-mono text-gray-600 bg-transparent border-0 border-none resize-none dark:text-gray-400 leading-inherit text-inherit focus:ring-0 focus:outline-none"
       readonly
       :value="output"
       @mouseover="dirty = false"

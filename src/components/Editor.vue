@@ -51,7 +51,7 @@ export default {
         lineWrapping: true,
         mode: 'text/x-python',
         styleActiveLine: true,
-        theme: 'dark',
+        theme: 'custom',
         value: content.value,
       })
 

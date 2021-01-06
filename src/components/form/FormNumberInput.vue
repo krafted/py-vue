@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between w-full space-x-4">
     <input
-      class="block w-full text-white bg-transparent focus:outline-none focus:ring-0"
+      class="block w-full text-gray-900 bg-transparent dark:text-white focus:outline-none focus:ring-0"
       :class="{ 'transform translate-y-1': value || focused }"
       type="number"
       :value="value"
@@ -15,7 +15,7 @@
       class="flex items-stretch space-x-1 transform translate-x-2 -translate-y-1"
     >
       <button
-        class="flex items-center justify-center w-8 h-8 bg-gray-800 rounded-full focus:outline-none hover:bg-gray-900 focus:bg-gray-900"
+        class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-800 focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-900 focus:bg-gray-200 dark:focus:bg-gray-900"
         @click="decrement"
       >
         <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -23,7 +23,7 @@
         </svg>
       </button>
       <button
-        class="flex items-center justify-center w-8 h-8 bg-gray-800 rounded-full focus:outline-none hover:bg-gray-900 focus:bg-gray-900"
+        class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-800 focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-900 focus:bg-gray-200 dark:focus:bg-gray-900"
         @click="increment"
       >
         <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

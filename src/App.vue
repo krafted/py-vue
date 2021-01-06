@@ -2,8 +2,8 @@
   <div class="flex flex-col h-screen">
     <Header />
 
-    <div class="flex flex-col flex-1 border-t border-gray-800 md:flex-row">
-      <Splitpanes :horizontal="!isMd">
+    <div class="flex flex-col flex-1 border-t border-gray-100 dark:border-gray-800 md:flex-row">
+      <Splitpanes :horizontal="state.settings.layout === 'horizontal'">
         <Pane
           class="flex flex-col w-full h-full overflow-hidden"
           min-size="33.333"
@@ -22,8 +22,8 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header class="flex items-center w-full px-4 py-3.5 border-b border-gray-800 pr-safe-right">
-              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-700 uppercase select-none">
+            <header class="flex items-center w-full px-4 py-3.5 border-b border-gray-100 dark:border-gray-800 pr-safe-right">
+              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-500 uppercase select-none dark:text-gray-700">
                 Output
               </h3>
 
@@ -92,9 +92,10 @@ import Settings from './components/Settings.vue'
 import TabBar from './components/TabBar.vue'
 import useMedia from './hooks/useMedia'
 import isMobile from 'is-mobile'
-import DEFAULT_SETTINGS from './config/settings'
+import DEFAULT_SETTINGS, { nonEditorSettings } from './config/settings'
 import defaultContent from './config/defaultContent'
 import dedent from 'dedent'
+import { updateTheme } from './utils/theme'
 
 export default {
   components: {
@@ -160,7 +161,7 @@ export default {
     const updateSetting = ({ key, value }) => {
       state.settings[key] = value
       localStorage.settings = JSON.stringify(state.settings)
-      editor.value.setOption(key, value)
+      if (!nonEditorSettings.includes(key)) editor.value.setOption(key, value)
     }
 
     watchEffect(() => {
@@ -171,7 +172,13 @@ export default {
       if (!localStorage.settings) localStorage.settings = JSON.stringify(DEFAULT_SETTINGS)
       else localStorage.settings = JSON.stringify({ ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.settings) })
       state.settings = JSON.parse(localStorage.settings)
-      Object.keys(toRaw(state.settings)).forEach(key => editor.value.setOption(key, state.settings[key]))
+      Object.keys(toRaw(state.settings)).forEach(key => {
+        if (!nonEditorSettings.includes(key)) editor.value.setOption(key, state.settings[key])
+      })
+    })
+
+    onMounted(() => {
+      if (state.settings.theme) updateTheme(state.settings.theme)
     })
 
     onMounted(async () => {

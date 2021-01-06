@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between py-1 pl-safe-left pr-safe-right">
       <h1>
         <a
-          class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-700 border border-transparent rounded-md select-none hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none"
+          class="flex items-center justify-center w-10 h-10 -ml-2 font-mono text-lg font-semibold text-gray-500 border border-transparent rounded-md select-none dark:text-gray-700 hover:bg-gray-200 dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-black focus:border-gray-300 dark:focus:border-gray-800 hover:border-gray-300 dark:hover:border-gray-800 hover:text-gray-900 dark:hover:text-gray-400 focus:text-gray-900 dark:focus:text-gray-400 focus:outline-none"
           href="/"
         >
           Py
@@ -12,7 +12,7 @@
 
       <div class="flex items-center justify-end -mr-2 space-x-2">
         <button
-          class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
+          class="flex items-center justify-center p-2.5 text-gray-500 dark:text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-gray-200 dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-black focus:border-gray-300 dark:focus:border-gray-800 hover:border-gray-300 dark:hover:border-gray-800 hover:text-gray-900 dark:hover:text-gray-400 focus:text-gray-900 dark:focus:text-gray-400 focus:outline-none focus:w-auto"
           @click="run"
         >
           <span
@@ -28,7 +28,7 @@
         </button>
 
         <button
-          class="flex items-center justify-center p-2.5 text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-black focus:bg-black focus:border-gray-800 hover:border-gray-800 hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:w-auto"
+          class="flex items-center justify-center p-2.5 text-gray-500 dark:text-gray-700 border border-transparent rounded-md group hover:w-auto hover:bg-gray-200 dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-black focus:border-gray-300 dark:focus:border-gray-800 hover:border-gray-300 dark:hover:border-gray-800 hover:text-gray-900 dark:hover:text-gray-400 focus:text-gray-900 dark:focus:text-gray-400 focus:outline-none focus:w-auto"
           @click="showSettings = true"
         >
           <span class="sr-only">Settings</span>

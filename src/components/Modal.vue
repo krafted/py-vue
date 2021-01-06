@@ -20,7 +20,7 @@
               aria-hidden="true"
               @click="close"
             >
-              <div class="absolute inset-0 bg-black bg-opacity-75" />
+              <div class="absolute inset-0 bg-gray-100 opacity-90 dark:bg-black" />
             </div>
           </transition>
 
@@ -37,20 +37,20 @@
           >
             <div
               v-show="show"
-              class="inline-block w-full overflow-hidden text-left align-bottom transition-all transform bg-gray-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg"
+              class="inline-block w-full overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-lg"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
             >
-              <div class="p-4 bg-gray-900 sm:p-6">
+              <div class="p-4 bg-white dark:bg-gray-900 sm:p-6">
                 <div class="flex items-start space-x-4 sm:space-x-6">
                   <div class="hidden sm:block">
                     <slot name="icon" />
                   </div>
 
-                  <div class="flex-1 text-gray-400">
+                  <div class="flex-1">
                     <header class="flex items-center">
-                      <h3 class="flex items-center h-12 text-lg font-semibold leading-6 text-gray-200 sm:h-10" id="modal-headline">
+                      <h3 class="flex items-center h-12 text-lg font-semibold leading-6 text-gray-600 dark:text-gray-200 sm:h-10" id="modal-headline">
                         <slot name="title" />
                       </h3>
                     </header>
@@ -61,7 +61,7 @@
                   </div>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-gray-800 sm:px-6 sm:flex sm:flex-row-reverse">
+              <div class="px-4 py-3 bg-gray-100 dark:bg-gray-800 sm:px-6 sm:flex sm:flex-row-reverse">
                 <slot name="actions" />
               </div>
             </div>

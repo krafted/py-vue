@@ -57,7 +57,7 @@
   >
     <p
       v-if="loading"
-      class="fixed text-gray-500 transition-opacity bottom-4 right-4"
+      class="fixed text-gray-500 transition-opacity bottom-4 right-4 mr-safe-right mb-safe-bottom"
     >
       <span class="sr-only">Loading</span>
 

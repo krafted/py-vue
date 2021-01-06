@@ -35,7 +35,7 @@
                 <span
                   v-if="dirty || error"
                   class="w-1 h-1 ml-2 transition-opacity rounded-full"
-                  :class="error ? 'bg-red-500' : 'bg-yellow-500'"
+                  :class="error ? 'bg-red-500' : 'bg-primary-500'"
                 />
               </transition>
             </header>

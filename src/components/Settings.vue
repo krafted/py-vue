@@ -176,7 +176,7 @@
     <template #actions>
       <button
         type="button"
-        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-600 bg-white border border-white rounded-md dark:text-gray-400 dark:border-gray-900 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-black focus:border-gray-300 dark:focus:border-gray-600 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-600 bg-white border border-white rounded-md dark:text-gray-400 dark:border-gray-900 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-black focus:bg-gray-200 dark:focus:bg-black focus:border-gray-300 dark:focus:border-gray-600 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-primary-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
         @click="show = false"
       >
         Close

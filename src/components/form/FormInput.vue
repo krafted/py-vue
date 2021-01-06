@@ -1,5 +1,5 @@
 <template>
-  <label class="flex items-center px-4 pt-4 pb-2 bg-gray-100 border border-gray-100 rounded-md dark:border-gray-800 dark:bg-gray-800 focus-within:bg-white dark:focus-within:bg-gray-900 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-gray-900 focus-within:ring-yellow-500">
+  <label class="flex items-center px-4 pt-4 pb-2 bg-gray-100 border border-gray-100 rounded-md dark:border-gray-800 dark:bg-gray-800 focus-within:bg-white dark:focus-within:bg-gray-900 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-gray-900 focus-within:ring-primary-500">
     <span
       class="absolute inset-x-0 block px-4 font-semibold tracking-wide text-gray-500 uppercase transition-all duration-200 ease-in-out transform"
       :class="{

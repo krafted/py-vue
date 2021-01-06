@@ -21,7 +21,7 @@ module.exports = {
       colors: {
         gray: colors.gray,
         orange: colors.orange,
-        primary: colors.yellow,
+        primary: colors.cyan,
       },
       cursor: {
         'col-resize': 'col-resize',

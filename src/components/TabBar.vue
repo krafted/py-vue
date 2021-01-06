@@ -7,7 +7,7 @@
         <button
           class="flex py-3.5 border-b-2 border-transparent focus:outline-none"
           :class="{
-            'border-yellow-500 text-gray-900 dark:text-gray-200': !isMd && app.activeTab === 'editor',
+            'border-primary-500 text-gray-900 dark:text-gray-200': !isMd && app.activeTab === 'editor',
             'border-transparent text-gray-500 dark:text-gray-700 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400': isMd || app.activeTab !== 'editor',
           }"
           @click="app.activeTab = 'editor'"
@@ -19,7 +19,7 @@
           v-if="!isMd"
           class="flex items-center py-3.5 border-b-2 focus:outline-none"
           :class="{
-            'border-yellow-500 text-gray-900 dark:text-gray-200': app.activeTab === 'output',
+            'border-primary-500 text-gray-900 dark:text-gray-200': app.activeTab === 'output',
             'border-transparent text-gray-500 dark:text-gray-700 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400': app.activeTab !== 'output',
           }"
           @click="app.activeTab = 'output', dirty = false"
@@ -34,7 +34,7 @@
             <span
               v-if="dirty || error"
               class="w-1 h-1 ml-2 transition-opacity rounded-full"
-              :class="error ? 'bg-red-500' : 'bg-yellow-500'"
+              :class="error ? 'bg-red-500' : 'bg-primary-500'"
             />
           </transition>
         </button>

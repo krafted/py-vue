@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex-1 mr-safe-right md:ml-safe-left"
+    class="flex-1 mr-safe-right"
+    :class="{ 'ml-safe-left': app.settings.layout === 'horizontal' }"
     :style="{
       fontSize: `${app.settings.fontSize}px`,
       lineHeight: `${app.settings.lineHeight}rem`,

@@ -22,11 +22,11 @@
           min-size="33.333"
         >
           <div class="relative flex flex-col flex-1">
-            <header
-              class="flex items-center w-full px-4 py-3.5 border-b border-gray-100 dark:border-gray-800 pr-safe-right"
-              :class="{ 'pl-safe-left': state.settings.layout === 'horizontal' }"
-            >
-              <h3 class="font-mono text-xs font-semibold tracking-wide text-gray-500 uppercase select-none dark:text-gray-700">
+            <header class="flex items-center w-full px-4 py-3.5 border-b border-gray-100 dark:border-gray-800 pr-safe-right">
+              <h3
+                class="font-mono text-xs font-semibold tracking-wide text-gray-500 uppercase select-none dark:text-gray-700"
+                :class="{ 'ml-safe-left': state.settings.layout === 'horizontal' }"
+              >
                 Output
               </h3>
 
@@ -168,7 +168,7 @@ export default {
     }
 
     watchEffect(() => {
-      if (isMd) state.activeTab = 'editor'
+      if (isMd.value) state.activeTab = 'editor'
     })
 
     onMounted(() => {

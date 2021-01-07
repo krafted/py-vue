@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-1 mr-safe-right"
+    class="flex-1 mr-safe-right md:ml-safe-left"
     :style="{
       fontSize: `${app.settings.fontSize}px`,
       lineHeight: `${app.settings.lineHeight}rem`,
